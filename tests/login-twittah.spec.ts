@@ -1,51 +1,51 @@
 import { test, expect } from '@playwright/test';
 import { app } from '../fixtures/app';
 import { invalidUser, validUser } from '../fixtures/users';
-
-test('Visit Twittah!', async ({ page }) => {
-  await page.goto(app.baseUrl);
-  await expect(page.getByTestId('app-name')).toBeVisible();
-  await expect(page.getByTestId('app-name')).toHaveText('Twittah!');
-});
+import { LoginPage } from '../pom/login.page';
+import { HomePage } from '../pom/home.page';
 
 test.describe('Login Twittah!', () => {
+  let loginPage: LoginPage;
+  let homePage: HomePage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto(app.baseUrl);
+    loginPage = new LoginPage(page);
+    homePage = new HomePage(page);
+
+    await loginPage.visit();
   });
 
   test('Login สำเร็จ ต้องไปที่หน้าแรก', async ({ page }) => {
-    await page.getByTestId('login-field').fill(validUser.credential.login);
-    await page.getByTestId('password-field').fill(validUser.credential.password);
-    await page.getByTestId('login-button').click();
+    await loginPage.loginWith(validUser.credential);
 
-    await expect(page.getByTestId('current-user-profile')).toBeVisible();
-    await expect(page.getByTestId('user-profile-display-name')).toHaveText(validUser.displayName);
-    await expect(page.getByTestId('user-profile-login-name')).toHaveText(`@${validUser.credential.login}`);
-    await expect(page.url()).toEqual(`${app.baseUrl}/home`);
+    await homePage.shouldBeDisplayed();
+    await homePage.shouldDisplayUserProfileOf(validUser);
   });
 
   test('Login ไม่ผ่าน เพราะรหัสผ่านไม่ถูกต้อง', async ({ page }) => {
-    await page.getByTestId('login-field').fill(invalidUser.credential.login);
-    await page.getByTestId('password-field').fill(invalidUser.credential.password);
-    await page.getByTestId('login-button').click();
+    await loginPage.loginWith(invalidUser.credential);
 
-    await expect(page.getByTestId('error-message')).toBeVisible();
-    await expect(page.getByTestId('error-message')).toHaveText('ล็อกอินหรือรหัสผ่านไม่ถูกต้อง');
-    await expect(page.getByTestId('user-profile')).not.toBeVisible();
-    await expect(page.url()).toEqual(`${app.baseUrl}/`);
+    await loginPage.shouldBeDisplayed();
+    await loginPage.shouldContainErrorMessage('ล็อกอินหรือรหัสผ่านไม่ถูกต้อง');
   });
 });
 
 test.describe('Logout Twittah!', () => {
+  let loginPage: LoginPage;
+  let homePage: HomePage;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    homePage = new HomePage(page);
+
+    await loginPage.visit();
+  });
+
   test('Logout สำเร็จ ต้องไปที่หน้าล็อกอิน', async ({ page }) => {
-    await page.goto(app.baseUrl);
+    await loginPage.loginWith(validUser.credential);
 
-    await page.getByTestId('login-field').fill(validUser.credential.login);
-    await page.getByTestId('password-field').fill(validUser.credential.password);
-    await page.getByTestId('login-button').click();
-    await page.getByTestId('menu-signout').click();
+    await homePage.logout();
 
-    await expect(page.getByTestId('app-name')).toHaveText('Twittah!');
-    await expect(page.url()).toEqual(`${app.baseUrl}/`);
+    await loginPage.shouldBeDisplayed();
   });
 });
