@@ -1,6 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { app } from '../fixtures/app';
-import { invalidUser, validUser } from '../fixtures/users';
+import { test } from '@playwright/test';
+import { invalidUsers, validUser } from '../fixtures/users';
 import { LoginPage } from '../pom/login.page';
 import { HomePage } from '../pom/home.page';
 
@@ -22,13 +21,16 @@ test.describe('Login Twittah!', () => {
     await homePage.shouldDisplayUserProfileOf(validUser);
   });
 
-  test('Login ไม่ผ่าน เพราะรหัสผ่านไม่ถูกต้อง', async ({ page }) => {
-    await loginPage.loginWith(invalidUser.credential);
-
-    await loginPage.shouldBeDisplayed();
-    await loginPage.shouldContainErrorMessage('ล็อกอินหรือรหัสผ่านไม่ถูกต้อง');
-  });
+  for (const invalidUser of invalidUsers) {
+    test(`Credential ไม่ถูกต้อง: ${invalidUser.credential.login}`, async ({ page }) => {
+      await loginPage.loginWith(invalidUser.credential);
+  
+      await loginPage.shouldBeDisplayed();
+      await loginPage.shouldContainErrorMessage(invalidUser.errorMessage);
+    });
+  }
 });
+
 
 test.describe('Logout Twittah!', () => {
   let loginPage: LoginPage;

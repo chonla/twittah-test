@@ -1,3 +1,4 @@
+import { InvalidUser } from "../interfaces/invalid-user";
 import { User } from "../interfaces/user";
 
 export const validUser: User = {
@@ -8,10 +9,19 @@ export const validUser: User = {
     }
 };
 
-export const invalidUser: User = {
-    displayName: 'คนไม่ดี',
-    credential: {
-        login: 'badguy',
-        password: 'no-such-a-password'
+export const invalidUsers: InvalidUser[] = [
+    {
+        errorMessage: 'ล็อกอินหรือรหัสผ่านไม่ถูกต้อง',
+        credential: {
+            login: 'badguy',
+            password: 'no-such-a-password'
+        }
+    },
+    {
+        errorMessage: 'ล็อกอินถูกระงับ',
+        credential: {
+            login: 'jomyut',
+            password: '123456'
+        }
     }
-};
+];
