@@ -1,7 +1,7 @@
 import { InvalidUser } from "../interfaces/invalid-user";
 import { User } from "../interfaces/user";
 
-export const validUser: User = {
+export const validUsers: User = {
     displayName: 'ไมตรี',
     credential: {
         login: 'maitree',
