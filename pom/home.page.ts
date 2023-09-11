@@ -12,7 +12,7 @@ export class HomePage {
 
     constructor(page: Page) {
         this._page = page;
-        this._pageUrl = `${app.baseUrl}/home`;
+        this._pageUrl = `${app.baseUrl}/`;
         this._currentUserProfileSection = page.getByTestId('current-user-profile');
         this._currentUserProfileDisplayNameLabel = page.getByTestId('user-profile-display-name');
         this._currentUserProfileLoginNameLabel = page.getByTestId('user-profile-login-name');

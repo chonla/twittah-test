@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { invalidUsers, validUser } from '../fixtures/users';
+import { invalidUsers, validUsers } from '../fixtures/users';
 import { LoginPage } from '../pom/login.page';
 import { HomePage } from '../pom/home.page';
 
@@ -15,10 +15,10 @@ test.describe('Login Twittah!', () => {
   });
 
   test('Login สำเร็จ ต้องไปที่หน้าแรก', async ({ page }) => {
-    await loginPage.loginWith(validUser.credential);
+    await loginPage.loginWith(validUsers.credential);
 
     await homePage.shouldBeDisplayed();
-    await homePage.shouldDisplayUserProfileOf(validUser);
+    await homePage.shouldDisplayUserProfileOf(validUsers);
   });
 
   for (const invalidUser of invalidUsers) {
@@ -44,7 +44,7 @@ test.describe('Logout Twittah!', () => {
   });
 
   test('Logout สำเร็จ ต้องไปที่หน้าล็อกอิน', async ({ page }) => {
-    await loginPage.loginWith(validUser.credential);
+    await loginPage.loginWith(validUsers.credential);
 
     await homePage.logout();
 
