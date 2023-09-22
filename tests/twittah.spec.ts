@@ -17,7 +17,7 @@ test.describe('Login Twittah!', () => {
     await expect(page.getByTestId('current-user-profile')).toBeVisible();
     await expect(page.getByTestId('user-profile-display-name')).toHaveText('บัญชา');
     await expect(page.getByTestId('user-profile-login-name')).toHaveText('@bancha');
-    await expect(page.url()).toEqual('https://twittah.web.app/home');
+    await expect(page).toHaveURL('https://twittah.web.app/home');
   });
 
   test('Login ไม่ผ่าน เพราะรหัสผ่านไม่ถูกต้อง', async ({ page }) => {
@@ -30,6 +30,6 @@ test.describe('Login Twittah!', () => {
     await expect(page.getByTestId('error-message')).toBeVisible();
     await expect(page.getByTestId('error-message')).toHaveText('ล็อกอินหรือรหัสผ่านไม่ถูกต้อง');
     await expect(page.getByTestId('user-profile')).not.toBeVisible();
-    await expect(page.url()).toEqual('https://twittah.web.app/');
+    await expect(page).toHaveURL('https://twittah.web.app/');
   });
 });
