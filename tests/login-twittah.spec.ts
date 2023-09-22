@@ -21,7 +21,7 @@ test.describe('Login Twittah!', () => {
     await expect(page.getByTestId('current-user-profile')).toBeVisible();
     await expect(page.getByTestId('user-profile-display-name')).toHaveText(validUser.displayName);
     await expect(page.getByTestId('user-profile-login-name')).toHaveText(`@${validUser.credential.login}`);
-    await expect(page.url()).toEqual(`${app.baseUrl}/home`);
+    await expect(page).toHaveURL(`${app.baseUrl}/home`);
   });
 
   test('Login ไม่ผ่าน เพราะรหัสผ่านไม่ถูกต้อง', async ({ page }) => {
@@ -32,7 +32,7 @@ test.describe('Login Twittah!', () => {
     await expect(page.getByTestId('error-message')).toBeVisible();
     await expect(page.getByTestId('error-message')).toHaveText('ล็อกอินหรือรหัสผ่านไม่ถูกต้อง');
     await expect(page.getByTestId('user-profile')).not.toBeVisible();
-    await expect(page.url()).toEqual(`${app.baseUrl}/`);
+    await expect(page).toHaveURL(`${app.baseUrl}/`);
   });
 });
 
@@ -46,6 +46,6 @@ test.describe('Logout Twittah!', () => {
     await page.getByTestId('menu-signout').click();
 
     await expect(page.getByTestId('app-name')).toHaveText('Twittah!');
-    await expect(page.url()).toEqual(`${app.baseUrl}/`);
+    await expect(page).toHaveURL(`${app.baseUrl}/`);
   });
 });
