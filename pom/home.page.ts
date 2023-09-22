@@ -1,4 +1,4 @@
-import { Locator, Page, PageScreenshotOptions, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { app } from "../fixtures/app";
 import { User } from "../interfaces/user";
 
