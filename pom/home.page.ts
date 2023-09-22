@@ -25,7 +25,7 @@ export class HomePage {
 
     async shouldBeDisplayed() {
         await this._page.waitForURL(this._pageUrl);
-        await expect(this._page.url()).toEqual(this._pageUrl);
+        await expect(this._page).toHaveURL(this._pageUrl);
     }
 
     async shouldDisplayUserProfileOf(user: User) {
